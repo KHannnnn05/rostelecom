@@ -63,12 +63,28 @@ class DataBase:
         current_date = (datetime.datetime.now().strftime('%d.%m.%Y'))
         self.cur.execute(f"""
                             SELECT info.full_name, sum(orders.bbi), sum(orders.tv), sum(orders.mvno), sum(orders.cctv), sum(orders.ss)
-                            FROM orders JOIN info ON orders.staff_id = info.staff_id
+                            FROM orders 
+                            JOIN info ON orders.staff_id = info.staff_id
                             WHERE orders.date = '{current_date}'
-                            ORDER BY info.full_name, orders.bbi, orders.tv, orders.mvno, orders.cctv, orders.ss DESC
+                            GROUP BY info.full_name
+                            ORDER BY info.full_name
                         """)
         rows = self.cur.fetchall()
         result = []
         for row in rows:
-            result.append([row[0], row[1], row[2], row[3], row[4], row[5]])
+            result.append([row[0].split()[0], row[1], row[2], row[3], row[4], row[5]])
         return result
+
+    def get_staff_id(self, telegram_id):
+        self.cur.execute("SELECT telegram_id FROM info WHERE telegram_id = ?", (telegram_id, ))
+        return self.cur.fetchone()
+
+    def get_staff_username(self, telegram_username):
+        if self.cur.execute("SELECT telegram_username FROM staff WHERE = ?", (telegram_username, )):
+            return True
+        else:
+            return False
+
+    def get_full_name(self, telegram_id):
+        self.cur.execute("SELECT full_name FROM info WHERE telegram_id = ?", (telegram_id, ))
+        return self.cur.fetchone()[0]

@@ -5,6 +5,8 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from prettytable import PrettyTable
+from aiogram.dispatcher.filters import Text
+
 
 order_kb = InlineKeyboardMarkup(row_width=2)
 but_1 = InlineKeyboardButton(text="Все верно!", callback_data='y')
@@ -26,8 +28,9 @@ class OrderState(StatesGroup):
     cctv: bool = State()
     ss: bool = State()
 
-@dp.message_handler(commands=['add_order'])
+@dp.message_handler(Text(equals='Новая заявка'))
 async def new_order(message: types.Message):
+    await message.answer(reply_markup=types.ReplyKeyboardRemove())
     await message.reply('Поздравляю вас с новой заявкой!\n' + \
                         'Ввыберите услуги которые вы продали и после этого отправьте любое сообщение боту \n', reply_markup=add_kb)
     await OrderState.bbi.set()

@@ -9,6 +9,7 @@ load_dotenv(dotenv_path)
 
 token = os.environ.get('API_TOKEN')
 sv_id = int(os.environ.get('SV_ID'))
+admin_id = int(os.environ.get('ADMIN_ID'))
 
 with sqlite3.connect('db.sqlite') as con:
     cur = con.cursor()
