@@ -75,6 +75,5 @@ async def process_callback_button1(callback_query: types.CallbackQuery):
 @dp.callback_query_handler(lambda c: c.data == 'y')
 async def yes(callback_query: types.CallbackQuery):
     await bot.answer_callback_query(callback_query.id)
-    db.add_new_order(telegram_id='989116900', bbi=1, tv=1, mvno=1, cctv=0, ss=0)
     db.add_new_order(telegram_id=callback_query.from_user.id, bbi=ubbi, tv=utv, mvno=umvno, cctv=ucctv, ss=uss)
     await bot.send_message(callback_query.from_user.id, "Информация обновлена")
