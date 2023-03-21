@@ -45,7 +45,7 @@ async def start_message(message: types.Message):
             await message.reply(f'Добрый день, {full_name}!', reply_markup=start_sv_kb)
         else:
             await message.reply(f'Добрый вечер, {full_name}!', reply_markup=start_sv_kb)
-    elif (len(message.text.split())) == 2 and db.get_staff_username(message.chat.username):
+    elif (len(message.text.split())) == 2:
         await message.reply('Добро пожаловать в 6-ю команду!\n' + \
                             'Для начала вам необходимо будет заполнить анкету\n' + \
                             'Введите полностью ваше ФИО.\n' + \
